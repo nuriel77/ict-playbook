@@ -1,0 +1,37 @@
+- import_tasks: deps_apt.yml
+  tags:
+    - deps
+    - ict_deps_apt
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- import_tasks: deps_yum.yml
+  tags:
+    - deps
+    - ict_deps_yum
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- import_tasks: config.yml
+  tags:
+    - ict_config
+
+- name: generate temporary values
+  block:
+
+    - name: generate access password for ixi chat
+      shell: "echo -n $(head -c 4 /dev/urandom | od -An -t x | tr -d ' ')"
+      changed_when: false
+      register: get_chat_passwrd
+      run_once: true
+
+    - name: set facts
+      set_fact:
+        ixi_chat_name: "ict-playbook"
+        ixi_chat_user: "ict-playbook-{{ ansible_date_time.epoch }}"
+        ixi_chat_password: "{{ get_chat_passwrd.stdout }}"
+
+- include: "ixi.yml ixi_module={{ module }}"
+  with_items: "{{ ixi_modules }}"
+  loop_control:
+    loop_var: module
+  tags:
+    - ixi_config

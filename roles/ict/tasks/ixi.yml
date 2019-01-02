@@ -1,0 +1,57 @@
+- name: "ixi module block for '{{ module.name }}'"
+  block:
+
+    - name: set module branch
+      set_fact:
+        module_branch: "{{ module.branch | default('master') }}"
+
+    - name: "git clone ixi module '{{ module.name }}' repository branch '{{ module_branch }}'"
+      git:
+        repo: "{{ module.repo_url }}"
+        dest: "{{ ict_base_dir }}/{{ module.name }}.ixi"
+        version: "{{ module_branch | default() }}"
+
+    - name: get module version
+      shell: echo -n $(/bin/grep ^version build.gradle | sed "s/^.*'\(.*\)'$/\1/")
+      changed_when: false
+      args:
+        chdir: "{{ ict_base_dir }}/{{ module.name }}.ixi"
+      register: module_version_tag
+
+    - name: set module version filename
+      set_fact:
+        jar_file: "{{ ict_base_dir }}/{{ module.name }}.ixi/{{ module.name | lower }}.ixi-{{ module_version_tag.stdout }}.jar"    
+
+    - name: build module
+      shell: "{{ gradle_bin }} clean && {{ gradle_bin }} fatJar"
+      args:
+        chdir: "{{ ict_base_dir }}/{{ module.name }}.ixi"
+        creates: "{{ jar_file }}"
+      environment:
+        GRADLE_HOME: "{{ gradle_base_dir }}"
+
+    - name: install service file if set
+      template:
+        src: "templates/{{ module.systemd_file }}.j2"
+        dest: "{{ systemd_dir }}/{{ module.systemd_file }}"
+      notify:
+        - restart {{ module.systemd_file }}
+      when: module.systemd_file is defined
+
+    - name: copy ixi environment config file if set
+      template:
+        src: "templates/{{ module.sysconfig_file }}.sysconfig.j2"
+        dest: "{{ config_dir }}/{{ module.sysconfig_file }}"
+      notify:
+        - restart {{ module.systemd_file }}
+      when: module.sysconfig_file is defined
+
+    - name: "start {{ module.systemd_file }}"
+      systemd:
+        name: "{{ module.systemd_file }}"
+        state: started
+        daemon_reload: yes
+        enabled: yes
+
+  tags:
+    - ixi_config

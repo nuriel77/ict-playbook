@@ -1,0 +1,9 @@
+ict_home_dir: /var/lib/ict
+ict_base_dir: "{{ ict_home_dir }}/ict-omega"
+ict_git_repo: "iotaledger/ict"
+ict_git_branch: master
+ict_username: ict
+
+# Must use quotes to prevent boolean in jinja2
+ict_ixi_enabled: "true"
+ict_spam_enabled: "false"

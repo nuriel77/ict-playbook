@@ -1,0 +1,31 @@
+- name: "git clone ict repository branch {{ ict_git_branch }}"
+  git:
+    repo: 'https://github.com/iotaledger/ict.git'
+    dest: "{{ ict_base_dir }}/ict"
+    version: "{{ ict_git_branch }}"
+
+- name: ict dir permissions
+  file:
+    path: "{{ item }}"
+    owner: "{{ ict_username }}"
+    group: "{{ ict_username }}"
+    state: directory
+    mode: 0700
+  with_items:
+    - "{{ ict_base_dir }}"
+    - "{{ ict_base_dir }}/ict"
+
+- name: get ict version
+  shell: echo -n $(/bin/grep ^version build.gradle | sed "s/^.*'\(.*\)'$/\1/")
+  changed_when: false
+  args:
+    chdir: "{{ ict_base_dir }}/ict"
+  register: ict_version_tag
+
+- name: build ict
+  shell: "{{ gradle_bin }} clean && {{ gradle_bin }} fatJar"
+  args:
+    chdir: "{{ ict_base_dir }}/ict"
+    creates: "{{ ict_base_dir }}/ict/ict-{{ ict_version_tag.stdout }}.jar"
+  environment:
+    GRADLE_HOME: "{{ gradle_base_dir }}"

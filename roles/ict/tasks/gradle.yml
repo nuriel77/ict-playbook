@@ -1,0 +1,23 @@
+- name: remove existing gradle base_dir
+  file:
+    path: "{{ gradle_base_dir }}"
+    state: absent
+  when:
+    - remove_gradle_base_dir is defined
+    - remove_gradle_base_dir|bool == True
+
+- name: create gradle base_dir
+  file:
+    path: "{{ gradle_base_dir }}"
+    state: directory
+
+- name: download and unarchive gradle release
+  unarchive:
+    src: "{{ gradle_download_url }}"
+    dest: "{{ gradle_base_dir }}"
+    remote_src: True
+    creates: "{{ gradle_base_dir }}/gradle-{{ gradle_version }}"
+
+- name: set gradle bin
+  set_fact:
+    gradle_bin: "{{ gradle_base_dir }}/gradle-{{ gradle_version }}/bin/gradle"

@@ -1,0 +1,3 @@
+ixi_modules:
+  - { 'name': 'Report', 'repo_url': 'https://github.com/trifel/Report.ixi', 'systemd_file': 'ict-report-ixi.service' }
+  - { 'name': 'chat', 'repo_url': 'https://github.com/iotaledger/chat.ixi', 'systemd_file': 'ict-chat-ixi.service', 'sysconfig_file': 'ict-chat-ixi' }
