@@ -1,0 +1,69 @@
+- name: ensure firewalld installed
+  yum:
+    name: firewalld
+    state: present
+
+- name: ensure firewalld started and enabled
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: allow ict tcp port in firewall
+  firewalld:
+    port: "{{ ict_port }}/tcp"
+    permanent: true
+    state: enabled
+    immediate: yes
+
+- name: ensure selinux enabled
+  selinux:
+    policy: targeted
+    state: enforcing
+  register: selinux_enabled
+
+- name: check selinux not disabled
+  shell: "getenforce"
+  changed_when: false
+  register: getenforce
+
+- name: exit and notify reboot required if selinux got enabled
+  block:
+
+    - name: ensure file exists
+      copy:
+        content: ""
+        dest: /var/run/playbook_reboot
+        force: no
+        group: root
+        owner: root
+        mode: 0644
+
+    - name: exit and notify reboot required to get selinux enabled
+      debug:
+        msg: "** NOTE *** Selinux was disabled on this host. It has now been enabled. Please reboot this host `shutdown -r now` and re-run this playbook."
+    - meta: end_play
+
+  when: selinux_enabled is defined and selinux_enabled.changed
+
+- name: exit and notify selinux not enabled
+  block:
+
+    - name: ensure file exists
+      copy:
+        content: ""
+        dest: /var/run/playbook_reboot
+        force: no
+        group: root
+        owner: root
+        mode: 0644
+
+    - name: exit and notify selinux not enabled
+      debug:
+        msg: >
+             ** NOTE ** The system might require a reboot to get selinux enabled.
+                        Check /etc/sysconfig/selinux if selinux is `enforcing`.
+                        If it is, the host needs to be rebooted `shutdown -r now`.
+                        Refusing to continue.
+    - meta: end_play
+  when: "getenforce is defined and 'stdout' in getenforce and 'Disabled' in getenforce.stdout"

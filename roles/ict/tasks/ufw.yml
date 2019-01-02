@@ -1,0 +1,55 @@
+- name: install ufw
+  apt:
+    name: ufw
+    state: present 
+
+- name: allow ict port in firewall
+  ufw:
+    rule: allow
+    direction: in
+    proto: tcp
+    port: "{{ ict_port }}"
+
+- name: ufw ict port
+  block:
+    - name: allow ict port in firewall
+      ufw:
+        rule: allow
+        direction: in
+        proto: tcp
+        port: "{{ ict_port }}"
+        log: yes
+
+    # ufw supports connection rate limiting, which is useful for protecting
+    # against denial of service attacks. ufw will deny connections if an IP
+    # address has attempted to initiate 6 or more connections in the last
+    # 30 seconds. See  http://www.debian-administration.org/articles/187
+    # for details.
+    - name: rate limit ict port in firewall
+      ufw:
+        rule: limit
+        direction: in
+        proto: tcp
+        port: "{{ ict_port }}"
+        log: yes
+      when:
+        - ufw_limit_ict_port is defined
+        - ufw_limit_ict_port|bool == True
+
+- name: allow ssh port firewall
+  ufw:
+    rule: allow
+    direction: in
+    proto: tcp
+    port: "{{ ssh_port }}"
+
+- name: ufw default outgoing policy allowed
+  ufw:
+    direction: outgoing
+    policy: allow
+
+- name: ensure ufw started and default incoming policy denied
+  ufw:
+    state: enabled
+    direction: incoming
+    policy: deny

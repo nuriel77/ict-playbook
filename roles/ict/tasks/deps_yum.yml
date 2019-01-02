@@ -60,7 +60,6 @@
       - git
       - policycoreutils-python
       - libappindicator
-      - firewalld
       - curl
       - wget
       - lsof

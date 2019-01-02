@@ -74,9 +74,7 @@
   vars:
     packages:
       - git
-      - maven
       - jq
-      - ufw
       - wget
       - lsof
       - curl
