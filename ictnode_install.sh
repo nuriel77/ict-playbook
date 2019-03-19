@@ -24,57 +24,46 @@ declare -g INSTALL_OPTIONS
 
 clear
 cat <<'EOF'
-
-
-                                                                   .odNMMmy:
-                                                                   /MMMMMMMMMy
-                                                                  `NMMMMMMMMMM:
-                                                                   mMMMMMMMMMM-
-                                `::-                               -dMMMMMMMN/
-                    `+sys/`    sNMMMm/   /ydho`                      :oyhhs/`
-                   :NMMMMMm-  -MMMMMMm  :MMMMMy  .+o/`
-                   hMMMMMMMs   sNMMMm:  `dMMMN/ .NMMMm
-                   -mMMMMMd.    `-:-`     .:-`  `hMMNs -syo`          .odNNmy/        `.
-                    `:oso:`                       `.`  mMMM+         -NMMMMMMMy    :yNNNNh/
-                       `--.      :ydmh/    `:/:`       -os+`/s+`     sMMMMMMMMM`  +MMMMMMMMs
-                     .hNNNNd/   /MMMMMM+  :mMMMm-   ``     -MMM+     -NMMMMMMMy   hMMMMMMMMN
-            ``       mMMMMMMM-  :MMMMMM/  oMMMMM/ .hNNd:    -/:`      .odmmdy/`   :NMMMMMMN+
-         -sdmmmh/    dMMMMMMN.   -shhs:   `/yhy/  /MMMMs `--`           ````       .ohddhs-
-        :NMMMMMMMy   `odmNmy-                      /ss+``dNNm.         .-.`           ``
-        yMMMMMMMMM`    ``.`                             `hNNh.       /dNNNms`      `-:-`
-        :NMMMMMMMs          .--.      /yddy:    .::-`    `..`       /MMMMMMMh    `smNNNms`
-         .ohdmdy:         -hmNNmh:   +MMMMMM/  /mMMNd.   ``         :MMMMMMMy    oMMMMMMMs   `-::.
-            ```  ``      `NMMMMMMN.  +MMMMMN:  yMMMMM- -hmmh-        /hmNNdo`    +MMMMMMM+  +mNMNNh-
-              -sdmmdy:   `mMMMMMMN`   :yhhs-   `+hhy:  oMMMMo          ...`       /hmmmh/  :MMMMMMMm
-             /NMMMMMMNo   .sdmmmy-                     `+yy/`     -+ss+.            `.`    .NMMMMMMh
-             dMMMMMMMMN     `..`                                 /NMMMMm-      :shyo.       -sdmmh+`
-     `       /NMMMMMMMo                 .-.                      oMMMMMM/     sMMMMMm.        ```
- `/ydddho-    -sdmmdy:                `hNNms                     `odmmd+      yMMMMMN-   -shhs:
--mMMMMMMMNo     ````           `--.   `mMMMm                 `-//- `..        `odddy:   :NMMMMN/
-mMMMMMMMMMM:            .//.   yNMN/   .+o/.                `dMMMNo       ./o+-  ``     /MMMMMM+
-mMMMMMMMMMM:            dMMd   ommd:     -+o/.              .NMMMMy      -mMMMN+         /hddh/
-:mMMMMMMMNs             -oo-    .:.     +NMMMm-         .//- -shy+`      -NMMMMo    `/oo:`  `
- `+ydmmdo-            `ohy/    smmdo    oMMMMN:        /NMMN+       `:++- -oso:    `dMMMMh
-     ``               /MMMm   `NMMMN`    :oso-         :mMMN/       oMMMM/         `mMMMMh
-                       :o+-    -oyo-         -+oo:`     .::.   -oo: /mNNm-     -+o/``/ss/`
-                      `:oo:      .:/-`      oMMMMMh`          `NMMM- `--`     :MMMMy
-                      oMMMM/    :mMMMm-     mMMMMMM.           +hho`     .+s+`.dNNm+
-                      :mNNd-    oMMMMM/     -hmNNd/                 -o+. hMMMo  .-`
-                       `..``    `/yhy/        `.`  `:oss+.          mMMh -shs.
-                        :ydds.       .://.        `hMMMMMN+         -+/.
-                       .MMMMMm      +NMMMMy       /MMMMMMMm
-                        yNNNN+      mMMMMMM-      `dMMMMMN+    ````
-                         .--` ``    :dNNNmo         :oss+.   -ydNNmh/
-                            /hmmh+`   .--`  ./++:`          /MMMMMMMMy
-                           :MMMMMMs        yMMMMMm/         hMMMMMMMMM      `-::-`
-                           -NMMMMM+       /MMMMMMMN         :NMMMMMMMo    -yNMMMMMh:
-                            .oyys-   ``   `mMMMMMMs          .ohmmds-    -NMMMMMMMMM+
-                                  `+dNNmy- `+yhhs:   `ohmmds-            sMMMMMMMMMMd
-                                  hMMMMMMM-         -NMMMMMMMs           :MMMMMMMMMMo
-                                  dMMMMMMM:         yMMMMMMMMM`           :dMMMMMMm+
-                                  .hMMMMm+          :MMMMMMMMy              .:++/.
-                                    `--.             -ymMMNh/
-
+                     /++-                              `:++.
+                       `:++:`                       ./+/.
+                           ./++-                `:++:`
+                               -++:`         ./+/.
+                                  ./y      .s:`
+                                    h `:/. -+
+                                   .d+/.`:+so
+       :.                      `:++:d      -s++/`                      ./`
+       `:++:`                 .y.   h      -+  `o/                  -++:`
+           -++/.              -s    h      -+   /+              `/++-
+              `:++:`          -y    h      -+   ++           -++/`
+                  ./+/.        -++/`h:++++/:o:++:`       `/++-
+                     `:++:`      .oyss-  .+yss-       -++/.
+                         .+o: `++:`  `ohhs.   -+o- .o+-`
+                           -o -s  ./+/.:/./++.  /+ /+
+                         -++- -h++:`   :/   `:++o+ .++:
+                     `:++- ./+oy       :/       +y+/. -++/.
+                  ./+/. -++:` -s       /o`      /+ `:++:``/++-
+              `:++:`./++-  .: .s/. `:+++o++/. `:o: :`  .++/. -++/`
+           ./++- -++/`     -o   :hsh/` :/  -hsh/`  o.     `:++- `/++-
+        -++/``/++-        .++ .y:`  -++os++:`  -s/ ++`        -++/. -++:`
+      `+-`-++/.        -++/`  -s       :+       /+  ./++-        `:++- ./-
+      `:++-        `:++-      -s       :/       /+      -++:`        -++/.
+   -++/.        .++/.         -s       :/       /+         ./++-        `/++-
+-++:`       `:++:`            -s       :/       /+            `:++:`        -++-
+s-       ./++.                -s      -os-      /+                ./+/.       `s
+s-     `+:`                   -s  `:+oy:-ys+/`  /+                   `:++.    `s
+s-                            -y++h+`  .-   /ho+o+                            `s
++o-                        `:+oh.  ./+/-./++-  `sy+/`                        .++
+  :++:`                 .++/. -y/++-  `:/.  ./++o+ ./++-                 `:++:`
+     ./+/.          `:++:`    -y  `:++:` -++/`  /+     -++:`          ./++-
+        `:++:`   ./+/.        -h++:`  ./+-   -++s+        ./++-    -++:`
+            -++++:`           -s  ./++-  ./++-  /+           `:++++-
+                              -h++-  `:++/`  ./+s+
+                              -s  -++:`   -++:` /+
+                              -h+/`  ./+++-  `-+s+
+                              -s ./++-    ./++- /+
+                              `o+-   -++++:`  ./o-
+                                 -++/`     :++:`
+                                    ./++/++-
 EOF
 
 
