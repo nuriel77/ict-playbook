@@ -9,6 +9,7 @@ ixi_enabled={{ ict_ixi_enabled | default('false') }}
 tangle_capacity={{ ict_tangle_capacity | default('10000') }}
 spam_enabled={{ ict_spam_enabled | default('false') }}
 min_forward_delay={{ ict_min_forward_delay | default('0') }}
-neighbors={{ ict_neighbors | default('') }}
+neighbors={{ ict_neighbors | join(',') }}
 host={{ ict_bind_host | default('0.0.0.0') }}
 max_forward_delay={{ ict_max_forward_delay | default('200') }}
+# GUI_PORT: 2187 ict_gui_port

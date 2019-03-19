@@ -1,9 +1,3 @@
-- name: "git clone ict repository branch {{ ict_git_branch }}"
-  git:
-    repo: 'https://github.com/iotaledger/ict.git'
-    dest: "{{ ict_base_dir }}/ict"
-    version: "{{ ict_git_branch }}"
-
 - name: ict dir permissions
   file:
     path: "{{ item }}"
@@ -15,17 +9,14 @@
     - "{{ ict_base_dir }}"
     - "{{ ict_base_dir }}/ict"
 
-- name: get ict version
-  shell: echo -n $(/bin/grep ^version build.gradle | sed "s/^.*'\(.*\)'$/\1/")
-  changed_when: false
-  args:
-    chdir: "{{ ict_base_dir }}/ict"
-  register: ict_version_tag
-
-- name: build ict
-  shell: "{{ gradle_bin }} clean && {{ gradle_bin }} fatJar"
-  args:
-    chdir: "{{ ict_base_dir }}/ict"
-    creates: "{{ ict_base_dir }}/ict/ict-{{ ict_version_tag.stdout }}.jar"
-  environment:
-    GRADLE_HOME: "{{ gradle_base_dir }}"
+- name: "Downloading ict jar from github. This can take a while ..."
+  get_url:
+    url: "https://github.com/iotaledger/ict/releases/download/{{ ict_version }}/ict-{{ ict_version }}.jar"
+    dest: "{{ ict_base_dir }}/ict/ict-{{ ict_version }}.jar"
+    owner: root
+    group: "{{ ict_username }}"
+    mode: 0640
+    timeout: 20
+  register: ict_downloaded
+  notify:
+    - restart ict

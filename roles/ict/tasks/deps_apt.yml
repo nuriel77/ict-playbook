@@ -91,6 +91,7 @@
       - openssl
       - bsdmainutils
       - whiptail
+      - unzip
   tags:
     - deps
     - scripts

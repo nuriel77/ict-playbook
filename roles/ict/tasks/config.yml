@@ -55,7 +55,7 @@
   notify:
     - restart ict
 
-- name: flush handlers 
+- name: flush handlers
   meta: flush_handlers
 
 - name: start ict

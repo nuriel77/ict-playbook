@@ -28,24 +28,6 @@
   tags:
     - ict_config
 
-- name: generate temporary values
-  block:
-
-    - name: generate access password for ixi chat
-      shell: "echo -n $(head -c 4 /dev/urandom | od -An -t x | tr -d ' ')"
-      changed_when: false
-      register: get_chat_passwrd
-      run_once: true
-
-    - name: set facts
-      set_fact:
-        ixi_chat_name: "ict-playbook"
-        ixi_chat_user: "ict-playbook-{{ ansible_date_time.epoch }}"
-        ixi_chat_password: "{{ get_chat_passwrd.stdout }}"
-
-- include: "ixi.yml ixi_module={{ module }}"
-  with_items: "{{ ixi_modules }}"
-  loop_control:
-    loop_var: module
+- include: ixi.yml
   tags:
     - ixi_config

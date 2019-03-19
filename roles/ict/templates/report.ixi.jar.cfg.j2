@@ -1,0 +1,34 @@
+{
+    "Ict REST API Port": ,
+    "Report.ixi Port": {{ ixi_modules[item.key].bind_port }},
+    "Neighbors": "[]",
+    "Ict REST API Password": "{{ lookup('password', '/dev/null length=9 chars=ascii_letters') }}",
+    "Name": "ict-playbook-{{ lookup('password', '/dev/null length=7 chars=ascii_letters') }}"
+}
+// The host IP address is used to create the UDP socket. 
+// If the IP address is 0.0.0.0, the socket will be bound to the wildcard address, 
+// an IP address chosen by the kernel. Mostly you don`t need to change the host IP.
+//host={{ ixi_modules[item.key].bind_address }}
+
+// The name of your Ict Client which is configured in the ict.cfg file. This name
+// is only used for the RMI connection between Report.ixi and the Ict Client.
+// The default value is set to "ict".
+//ictName=ict
+
+// The additional port of the Report.ixi application of your instance. 
+// This additional port is not the Ict port.
+//reportPort={{ ixi_modules[item.key].bind_port }}
+
+// optional: 
+// Must be defined if the external report port is different from the internal.
+//externalReportPort=1338
+
+// A simple name chosen by the Ict operator for this Ict node.
+// There is no guarantee that this name is unique, multiple Ict nodes may
+// use the same name. Follow the naming convention: "<name> (ict-<number>)", e.g. 
+// "ixuz (ict-0)" or "testIT (ict-0)".
+//name="ict-playbook-{{ lookup('password', '/dev/null length=9 chars=ascii_letters') }}"
+
+// Add host and port of your neighbors Report.ixi (comma separated, no whitespace).
+// Please note that the port numbers should refer to your neighbor's Report.ixi operational port.
+//neighbors={{ ict_neighbors | join(',') }}
