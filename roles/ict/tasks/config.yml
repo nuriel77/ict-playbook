@@ -1,0 +1,66 @@
+- name: add user for ict
+  user:
+    name: "{{ ict_username }}"
+    shell: /sbin/nologin
+    createhome: yes
+    home: "{{ ict_home_dir }}"
+  tags:
+    - ict_user
+
+- name: ict homedir permissions
+  file:
+    path: "{{ ict_home_dir }}"
+    owner: "{{ ict_username }}"
+    group: "{{ ict_username }}"
+    state: directory
+    mode: 0700
+
+- name: copy ict config file
+  template:
+    src: templates/ict.cfg.j2
+    dest: "{{ ict_home_dir }}/ict.cfg"
+    mode: 0600
+    owner: "{{ ict_username }}"
+    group: "{{ ict_username }}"
+    force: "{{ overwrite | default('no') }}"
+  notify:
+    - restart ict
+
+- name: copy ict systemd service file
+  template:
+    src: templates/ict.service.j2
+    dest: "{{ systemd_dir }}/ict.service"
+  notify:
+    - restart ict
+
+- name: install gradle
+  import_tasks: gradle.yml
+  tags:
+    - gradle_install
+
+- name: build ict
+  import_tasks: ict.yml
+  tags:
+    - ict_build
+
+# Has to run after build ict to get the version
+- name: copy ict environment file
+  template:
+    src: templates/ict.sysconfig.j2
+    dest: "{{ config_dir }}/ict"
+    mode: 0600
+    owner: "{{ ict_username }}"
+    group: "{{ ict_username }}"
+    force: "{{ overwrite | default('no') }}"
+  notify:
+    - restart ict
+
+- name: flush handlers
+  meta: flush_handlers
+
+- name: start ict
+  systemd:
+    name: ict.service
+    state: started
+    daemon_reload: yes
+    enabled: yes

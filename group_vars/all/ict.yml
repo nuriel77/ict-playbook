@@ -1,0 +1,20 @@
+ict_home_dir: /var/lib/ict
+ict_base_dir : "{{ ict_home_dir }}/ict-omega"
+ict_git_repo: "iotaledger/ict"
+ict_version: 0.5.1
+ict_username: ict
+ict_neighbors: []
+ict_gui_port: 2187
+
+# Must use quotes to prevent boolean in jinja2
+ict_ixi_enabled: "true"
+ict_spam_enabled: "false"
+
+# The RPM version to download, check https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html
+oracle_java_rpm: 'http://download.oracle.com/otn-pub/java/jdk/11.0.2+9/f51449fcd52f4d52b93a989c5c56ed3c/jdk-11.0.2_linux-x64_bin.rpm'
+
+# The version to download for Ubuntu
+oracle_java_tar: 'https://download.oracle.com/otn-pub/java/jdk/11.0.2+9/f51449fcd52f4d52b93a989c5c56ed3c/jdk-11.0.2_linux-x64_bin.tar.gz'
+
+# Java oracle directory
+oracle_java_dir: jdk-11.0.2

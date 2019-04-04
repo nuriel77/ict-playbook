@@ -1,0 +1,11 @@
+ixi_modules:
+  report.ixi:
+    version: 0.5.2
+    github_repository: trifel/Report.ixi
+    bind_address: 0.0.0.0
+    bind_port: 1338
+    config_file: report.ixi.jar.cfg
+  chat.ixi:
+    version: 1.4
+    github_repository: iotaledger/chat.ixi
+    config_file: chat.ixi.jar.cfg

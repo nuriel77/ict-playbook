@@ -1,0 +1,32 @@
+# Managed by Ansible
+[Unit]
+Description=ICT Chat IXI
+Requires=ict.service
+After=ict.service
+
+[Service]
+WorkingDirectory={{ ict_base_dir }}
+EnvironmentFile=-{{ config_dir }}/{{ module.sysconfig_file }}
+ExecStartPre=while [ \$(netstat -nlpu | grep -c "^udp.*:$port") -eq 0 ] ; do sleep 1 ; done; sleep 10
+ExecStart=/usr/bin/java -jar {{ jar_file }} ${ICTNAME} ${CHATUSER} ${RANDOMPASS}
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=always
+RestartSec=10
+Type=simple
+User={{ ict_username }}
+Group={{ ict_username }}
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=ict-chat-ixi
+
+# Restrict process
+PrivateDevices=yes
+PrivateTmp=yes
+ProtectSystem=full
+ProtectHome=yes
+
+LimitNOFILE={{ ict_open_files_limit | default('8192') }}
+
+[Install]
+WantedBy=multi-user.target

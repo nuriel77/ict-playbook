@@ -1,0 +1,20 @@
+- name: restart ict
+  systemd:
+    name: ict.service
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+
+- name: restart ict-chat-ixi.service
+  systemd:
+    name: ict-chat-ixi.service
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+
+- name: restart ict-report-ixi.service
+  systemd:
+    name: ict-report-ixi.service
+    state: restarted
+    daemon_reload: yes
+    enabled: yes

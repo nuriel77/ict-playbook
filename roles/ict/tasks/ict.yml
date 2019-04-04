@@ -1,0 +1,22 @@
+- name: ict dir permissions
+  file:
+    path: "{{ item }}"
+    owner: "{{ ict_username }}"
+    group: "{{ ict_username }}"
+    state: directory
+    mode: 0700
+  with_items:
+    - "{{ ict_base_dir }}"
+    - "{{ ict_base_dir }}/ict"
+
+- name: "Downloading ict jar from github. This can take a while ..."
+  get_url:
+    url: "https://github.com/iotaledger/ict/releases/download/{{ ict_version }}/ict-{{ ict_version }}.jar"
+    dest: "{{ ict_base_dir }}/ict/ict-{{ ict_version }}.jar"
+    owner: root
+    group: "{{ ict_username }}"
+    mode: 0640
+    timeout: 20
+  register: ict_downloaded
+  notify:
+    - restart ict

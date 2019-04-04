@@ -1,0 +1,57 @@
+---
+- name: generate temporary values
+  block:
+
+    - name: generate access password for ixi chat
+      shell: "echo -n $(head -c 4 /dev/urandom | od -An -t x | tr -d ' ')"
+      changed_when: false
+      register: get_chat_passwrd
+      run_once: true
+
+    - name: set facts
+      set_fact:
+        ixi_chat_name: "ict-playbook"
+        ixi_chat_user: "ict-playbook-{{ ansible_date_time.epoch }}"
+        ixi_chat_password: "{{ get_chat_passwrd.stdout }}"
+
+  no_log: true
+
+- name: "Prepare directory for ixi modules"
+  file:
+    state: directory
+    dest: "{{ ict_base_dir }}/{{ item.key }}"
+  with_dict: "{{ ixi_modules }}"
+
+- name: "Downloading ixi module jar from github. This can take a while ..."
+  get_url:
+    url: "https://github.com/{{ item.value.github_repository }}/releases/download/{{ item.value.version }}/{{ item.key }}-{{ item.value.version }}.jar"
+    dest: "{{ ict_base_dir }}/{{ item.key }}"
+    owner: root
+    group: "{{ ict_username }}"
+    mode: 0640
+    timeout: 20
+  with_dict: "{{ ixi_modules }}"
+
+- name: "Create symlink to jar"
+  file:
+    state: link
+    src: "{{ ict_base_dir }}/{{ item.key }}/{{ item.key }}-{{ item.value.version }}.jar"
+    dest: "{{ ict_base_dir }}/modules/{{ item.key }}.jar"
+    force: "{{ overwrite | default('no') }}"
+  with_dict: "{{ ixi_modules }}"
+
+- name: "Create module's work directory"
+  file:
+    state: directory
+    dest: "{{ ict_base_dir }}/modules/{{ item.key }}"
+  with_dict: "{{ ixi_modules }}"
+
+- name: "Copy module config file"
+  template:
+    src: "templates/{{ item.value.config_file }}.j2"
+    dest: "{{ ict_base_dir }}/modules/{{ item.value.config_file }}"
+    force: "{{ overwrite | default('no') }}"
+    mode: 0640
+    owner: root
+    group: "{{ ict_username }}"
+  with_dict: "{{ ixi_modules }}"

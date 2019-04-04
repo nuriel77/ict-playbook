@@ -1,0 +1,31 @@
+# Managed by Ansible
+[Unit]
+Description=ICT Node
+After=network-online.target
+
+[Service]
+WorkingDirectory={{ ict_base_dir }}
+EnvironmentFile=-{{ config_dir }}/ict
+ExecStart=/usr/bin/java -jar {{ ict_base_dir }}/ict/ict-${ICT_VERSION}.jar -c {{ ict_home_dir }}/ict.cfg
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=always
+RestartSec=10
+Type=simple
+User={{ ict_username }}
+Group={{ ict_username }}
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=ict
+PIDFile=/var/run/ict.pid
+
+# Restrict process
+PrivateDevices=yes
+PrivateTmp=yes
+ProtectSystem=full
+ProtectHome=yes
+
+LimitNOFILE={{ ict_open_files_limit | default('8192') }}
+
+[Install]
+WantedBy=multi-user.target
